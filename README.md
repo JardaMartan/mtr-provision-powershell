@@ -36,14 +36,14 @@ The OAuth process is implemented in C# and prepared to run on MS Internet Inform
 The workflow is marked in comments in [ps/registerDevice.ps1](ps/registerDevice.ps1). The initial part of the script includes the necessary parameters:
 
 **deviceIP** - IP address of the video device  
-**workspaceName** - Webex Workspace to which the device should be registered  
+**workspaceName** - Webex Workspace to which the device should be registered
 
 Then there are parameters which can stay the same for all devices or can be configured based on the device location:
 
 **timeZone** - time zone of the device  
 **timeFormat** - format of the time  
 **dateFormat** - format of the date  
-**language** - language of the device's user interface  
+**language** - language of the device's user interface
 
 The parameter values can be found at [RoomOS Time](https://roomos.cisco.com/xapi/domain/?domain=Time&Type=Configuration) and [RoomOS UserInterface](https://roomos.cisco.com/xapi/domain/?domain=UserInterface&Type=Configuration).
 
@@ -55,39 +55,53 @@ Additional parameters are:
 
 Application configuration is set using environment variables. See [ps/setEnvironment.sample.ps1](ps/setEnvironment.sample.ps1) for the list and modify them accordingly. Same approach applies to the IIS part of the application. The IIS environment variables are:
 
-**DATABASE_SERVER** - SQL database server, for example **(local)/SQLEXPRESS**
-**DATABASE_NAME** - SQL database name, for example **master**
-**DATABASE_USER** - SQL database user, for example **sa**
-**DATABASE_PASSWORD** - SQL database password
-**WEBEX_CLIENT_ID** - client id provided in Webex Integration
-**WEBEX_CLIENT_SECRET** - client secret provided in Webex Integration
-**WEBEX_REDIRECT_URI** - redirect URI - URL of the IIS server for the **callback** endpoint of the application, for example **https://server.domain.com/OAuth/callback**
+**DATABASE_SERVER** - SQL database server, for example **(local)/SQLEXPRESS**  
+**DATABASE_NAME** - SQL database name, for example **master**  
+**DATABASE_USER** - SQL database user, for example **sa**  
+**DATABASE_PASSWORD** - SQL database password  
+**WEBEX_CLIENT_ID** - client id provided in Webex Integration  
+**WEBEX_CLIENT_SECRET** - client secret provided in Webex Integration  
+**WEBEX_REDIRECT_URI** - redirect URI - URL of the IIS server for the **callback** endpoint of the application, for example **https://server.domain.com/OAuth/callback**  
 **PROXY_URL** - proxy URL
 
 ### STEP 1
+
 Check connection to the device. Set the http proxy, language, time zone, date and time formats.
 
 ### STEP 2
+
 Search for the existing Webex Workspace and create new if it doesn't exist.
 
 ### STEP 3
+
 Optionally close the initial wizard.
 
 ### STEP 4
+
 Create activation code for the Workspace.
 
 ### STEP 5
+
 Register the device using the activation code.
 
 ### STEP 6
+
 Wait for the device to become registered to Webex.
 
 ### STEP 7
+
 Create local user on the device. Set the language again to make sure the device localization is correct.
 
 ### STEP 8
+
 Verify the access to the device using the newly created local user.
 
 ## Deploy the application
+
+Create **WebexTokens** table in the SQL database using the [sql/createWebexTokens.sql](sql/createWebexTokens.sql) script. The table will store the Access Token and Refresh Token.
 The application was written using Visual Studio. Visual Studio provides tools to deploy the application to IIS. After the deployment, set the environment variables in IIS. See for example [here](https://stackoverflow.com/questions/31049152/publish-to-iis-setting-environment-variable).
+
+<img src="./images/iis_config_1.png" width="60%">
+<img src="./images/iis_config_1.png" width="80%">
+
 Before running the [ps/registerDevice.ps1](ps/registerDevice.ps1) make sure the environment variables are available to it. For example by copying [ps/setEnvironment.sample.ps1](ps/setEnvironment.sample.ps1) to **setEnvironment.ps1**, modifying it accordingly and running it before the **registerDevice.ps1** script.
