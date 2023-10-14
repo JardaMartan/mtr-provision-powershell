@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>
+        Webex authorization: <a href="@Url.Action("authorize")">create new tokens</a><br />
+    </p>
+
+    @if (@ViewBag.Tokens != null) {
+        <br />
+        <p>Existing tokens:</p>
+    <p>Access Token Expires: @ViewBag.Tokens.expires</p>
+        <p>Refresh Token Expires: @ViewBag.Tokens.refresh_token_expires</p>
+        <p><a href="@Url.Action("refresh")">refresh exsiting tokens</a></p>
+    }
+</div>

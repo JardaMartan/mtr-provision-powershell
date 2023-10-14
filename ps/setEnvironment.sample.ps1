@@ -1,0 +1,8 @@
+﻿[System.Environment]::SetEnvironmentVariable('DATABASE_SERVER','(local)\SQLEXPRESS')
+[System.Environment]::SetEnvironmentVariable('DATABASE_NAME','master')
+[System.Environment]::SetEnvironmentVariable('DATABASE_USER','sa')
+[System.Environment]::SetEnvironmentVariable('DATABASE_PASSWORD','some_db_password')
+[System.Environment]::SetEnvironmentVariable('WEBEX_CLIENT_ID','C02cb025355183cf814f2f347930423c00348f4e53120135c1b826a89b1381237')
+[System.Environment]::SetEnvironmentVariable('PROXY_URL','http://proxy.esl.cisco.com:8080')
+[System.Environment]::SetEnvironmentVariable('TOKEN_REFRESH_URL','https://localhost/OAuth/refresh')
+[System.Environment]::SetEnvironmentVariable('TOKEN_CREATE_URL','https://dcsec.ucsec.lab/OAuth')
