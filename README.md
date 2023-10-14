@@ -99,6 +99,7 @@ Verify the access to the device using the newly created local user.
 ## Deploy the application
 
 Create **WebexTokens** table in the SQL database using the [sql/createWebexTokens.sql](sql/createWebexTokens.sql) script. The table will store the Access Token and Refresh Token.
+
 The application was written using Visual Studio. Visual Studio provides tools to deploy the application to IIS. After the deployment, set the environment variables in IIS. See for example [here](https://stackoverflow.com/questions/31049152/publish-to-iis-setting-environment-variable).
 
 <img src="./images/iis_config_1.png" width="60%">
