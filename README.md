@@ -102,6 +102,6 @@ Create **WebexTokens** table in the SQL database using the [sql/createWebexToken
 The application was written using Visual Studio. Visual Studio provides tools to deploy the application to IIS. After the deployment, set the environment variables in IIS. See for example [here](https://stackoverflow.com/questions/31049152/publish-to-iis-setting-environment-variable).
 
 <img src="./images/iis_config_1.png" width="60%">
-<img src="./images/iis_config_1.png" width="80%">
+<img src="./images/iis_config_2.png" width="80%">
 
 Before running the [ps/registerDevice.ps1](ps/registerDevice.ps1) make sure the environment variables are available to it. For example by copying [ps/setEnvironment.sample.ps1](ps/setEnvironment.sample.ps1) to **setEnvironment.ps1**, modifying it accordingly and running it before the **registerDevice.ps1** script.
