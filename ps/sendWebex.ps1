@@ -38,17 +38,17 @@ add-type @"
 [System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy
 
 # Define database connection parameters
-$serverName = "(local)\SQLEXPRESS"
-$databaseName = "master"
-$dbUsername = "sa"
-$dbPassword = "Ucsec,123"
+$serverName = [System.Environment]::GetEnvironmentVariable('DATABASE_SERVER')
+$databaseName = [System.Environment]::GetEnvironmentVariable('DATABASE_MAME')
+$dbUsername = [System.Environment]::GetEnvironmentVariable('DATABASE_USER')
+$dbPassword = [System.Environment]::GetEnvironmentVariable('DATABASE_PASSWORD')
 
 # Webex Integration Client Id
-$clientId = "C02cb025355183cf814f2f347930423c00348f4e53120135c1b826a89b1381237"
+$clientId = [System.Environment]::GetEnvironmentVariable('WEBEX_CLIENT_ID')
 
 # URLs for Webex Access Token management
-$tokenRenewUrl = "https://localhost/OAuth/refresh"
-$tokenPage = "https://dcsec.ucsec.lab/OAuth"
+$tokenRenewUrl = [System.Environment]::GetEnvironmentVariable('TOKEN_REFRESH_URL')
+$tokenPage = [System.Environment]::GetEnvironmentVariable('TOKEN_CREATE_URL')
 
 # get Webex Access Token from the database
 $query = "SELECT accessToken,expires FROM WebexTokens WHERE clientId='$clientId'"

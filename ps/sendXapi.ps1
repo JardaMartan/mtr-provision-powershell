@@ -1,6 +1,6 @@
 ﻿$deviceIP = "10.229.102.55"
-$username = "cisco"
-$password = "C1sco123"
+$username = "admin"
+$password = ""
 
 $timeZone = "Europe/Prague"
 $timeFormat = "24H"
