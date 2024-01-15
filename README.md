@@ -100,9 +100,17 @@ Verify the access to the device using the newly created local user.
 
 Create **WebexTokens** table in the SQL database using the [sql/createWebexTokens.sql](sql/createWebexTokens.sql) script. The table will store the Access Token and Refresh Token.
 
-The application was written using Visual Studio. Visual Studio provides tools to deploy the application to IIS. After the deployment, set the environment variables in IIS. See for example [here](https://stackoverflow.com/questions/31049152/publish-to-iis-setting-environment-variable).
+The application was written using Visual Studio. Visual Studio provides tools to deploy the application to IIS. Install .NET 6.0 hosting bundle to the IIS from
+[https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-aspnetcore-6.0.6-windows-hosting-bundle-installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-aspnetcore-6.0.6-windows-hosting-bundle-installer).  
+After the deployment, set the environment variables in IIS. See for example [here](https://stackoverflow.com/questions/31049152/publish-to-iis-setting-environment-variable).
 
 <img src="./images/iis_config_1.png" width="60%">
 <img src="./images/iis_config_2.png" width="80%">
+
+The Powershell script requires SqlServer module, install it using:
+
+```powershell
+Install-Module -Name SqlServer -Force -AllowClobber
+```
 
 Before running the [ps/registerDevice.ps1](ps/registerDevice.ps1) make sure the environment variables are available to it. For example by copying [ps/setEnvironment.sample.ps1](ps/setEnvironment.sample.ps1) to **setEnvironment.ps1**, modifying it accordingly and running it before the **registerDevice.ps1** script.
