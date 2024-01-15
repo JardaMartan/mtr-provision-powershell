@@ -1,12 +1,24 @@
 ﻿# device configuration parameters
-$deviceIP = "10.229.102.55"
-$workspaceName = "Test"
+$deviceIP = "10.229.102.66"
+$workspaceName = "PRG7-5-DeskPro 2"
+$location = @{
+    displayName = "PRG7";
+    address1 = "Pujmanove 1753/10a";
+    address2 = "";
+    cityName = "Praha 4";
+    zip = "14000";
+    state = "";
+    countryCode = "CZ";
+    latitude = "50.0498981";
+    longitude = "14.4352742";
+    timeZone = "Europe/Prague";
+}
 
 # additional parameters
-$timeZone = "Europe/Prague"
+$timeZone = $location.timeZone
 $timeFormat = "24H"
 $dateFormat = "DD_MM_YY"
-$language = "Czech"
+$language = "English"
 $username = "admin"
 $password = ""
 
@@ -139,7 +151,7 @@ function webexGet($path, $params = $null, $accessToken) {
 
         $resp
     } catch {
-        Write-Host "webex API request error: $_.Exception.Response"
+        Write-Host "webex API GET request error: $_.Exception.Response"
     }
 }
 
@@ -162,7 +174,30 @@ function webexPost($path, $params = $null, $body, $accessToken) {
 
         $resp
     } catch {
-        Write-Host "webex API request error: $_.Exception.Response"
+        Write-Host "webex API POST request error: $_.Exception.Response"
+    }
+}
+
+# PUT to Webex API
+function webexPut($path, $params = $null, $body, $accessToken) {
+    $headers = createWebexHeaders -accessToken $accessToken
+
+    if ($params) {
+        # Convert the parameters to a query string
+        $queryString = "?" + ($params.GetEnumerator() | ForEach-Object { "$([System.Web.HttpUtility]::UrlEncode($_.Key))=$([System.Web.HttpUtility]::UrlEncode($_.Value))" }) -join '&'
+    } else {
+        $queryString = ""
+    }
+    $uriWithParams = "https://webexapis.com/v1" + $path + $queryString
+
+    Write-Host "query URL: $uriWithParams"
+
+    try {
+        $resp = Invoke-RestMethod -Uri $uriWithParams -Method Put -Headers $headers -Body ($body|ConvertTo-Json) -ContentType "application/json"  -Proxy $httpProxy
+
+        $resp
+    } catch {
+        Write-Host "webex API PUT request error: $_.Exception.Response"
     }
 }
 
@@ -319,12 +354,57 @@ foreach ($command in $initialCommands) {
 }
 
 #
-# STEP 2: search for existing space, create a new one if not found
+# STEP 2: search for existing workspace, create a new one if not found
+#   also search & create a location of the workspace
 #
-$res = webexGet -path "/workspaces" -params @{"displayName" = $workspaceName} -accessToken $accessToken
+
+$locationAddressData = @{
+    address1 = $location.address1;
+    address2 = $location.address2;
+    postalCode = $location.zip;
+    city = $location.cityName;
+    state = $location.state;
+    country = $location.countryCode
+}
+$locationData = @{
+    name = $location.displayName;
+    timeZone = $location.timeZone;
+    address = $locationAddressData;
+    latitude = $location.latitude;
+    longitude = $location.longitude  
+}
+if ($location.address2.Length > 0) {
+    $wsLocAddress = $location.address1+", "+$location.address2
+} else {
+    $wsLocAddress = $location.address1
+}
+$wsLocationData = @{
+    displayName = $location.displayName;
+    address = $wsLocAddress;
+    countryCode = $location.countryCode;
+    cityName = $location.cityName;
+    latitude = $location.latitude;
+    longitude = $location.longitude  
+}
+
+$wsLoc = webexGet -path "/workspaceLocations" -params @{displayName = $location.displayName} -accessToken $accessToken
+if ($wsLoc.items.Count -eq 0) {
+    Write-Host "location '$($location.displayName)' not found, creating new one"
+    $wsLoc = webexPost -path "/workspaceLocations" -body $wsLocationData -accessToken $accessToken
+
+    $wsLocationId = $wsLoc.id
+    $locationId = $wsLoc.locationId
+    Write-Host "workspace location created: $wsLocationId, location id: $locationId"
+    webexPut -path "/locations/$locationId" -body $locationData -accessToken $accessToken
+} else {
+    Write-Host "workspace location '$($location.displayName)' found: $($wsLoc.items[0].id)"
+    $wsLocationId = $wsLoc.items[0].id
+}
+
+$res = webexGet -path "/workspaces" -params @{displayName = $workspaceName} -accessToken $accessToken
 if ($res.items.Count -eq 0) {
     Write-Host "workspace '$workspaceName' not found, creating new one"
-    $res = webexPost -path "/workspaces" -body @{"displayName" = $workspaceName} -accessToken $accessToken
+    $res = webexPost -path "/workspaces" -body @{displayName = $workspaceName; "workspaceLocationId" = $wsLocationId} -accessToken $accessToken
 
     Write-Host "workspace created: $($res.id)"
     $workspaceId = $res.id
