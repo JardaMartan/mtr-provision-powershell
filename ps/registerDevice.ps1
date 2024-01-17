@@ -46,8 +46,10 @@ $initialCommands = @(
 "xConfiguration Time DateFormat: $dateFormat") + $proxyConfig
 
 
-# set to $false if registering for MTR mode
+# close initial OSD wizard - automated deployment
 $closeInitialWizard = $true # $false
+# install Microsoft Teams Rooms (MTR) software
+$mtrMode = $true # $false
 
 # new local user
 $localUser = @{
@@ -472,7 +474,7 @@ while (!$deviceRegistered) {
 #
 # STEP 7: once the device is registered, create a local user (using Webex xAPI)
 #
-Start-Sleep -Seconds 5
+Start-Sleep -Seconds 10
 Write-Host "post-registration action start"
 $xCommand = "UserManagement.User.Add"
 $body = @{
@@ -484,7 +486,23 @@ $res = webexPost -path "/xapi/command/$xCommand" -body $body -accessToken $acces
 $xCommand = "xConfiguration UserInterface Language: $language"
 
 #
-# STEP 8: check the device access using the local user
+# STEP 8: switch from RoomOS mode to MTR
+#
+if ($mtrMode) {
+    Write-Host "installing MTR software"
+    $mtrCommand = "MicrosoftTeams.Install"
+    $body = @{
+        deviceId = $device.id;
+        arguments = @{
+            Name = "MicrosoftTeamsRooms"
+        }
+    }
+    $res = webexPost -path "/xapi/command/$mtrCommand" -body $body -accessToken $accessToken
+}
+
+
+#
+# STEP 9: check the device access using the local user
 #
 
 Start-Sleep -Seconds 5
