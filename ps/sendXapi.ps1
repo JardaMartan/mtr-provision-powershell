@@ -1,6 +1,6 @@
 ﻿$deviceIP = "10.229.102.55"
-$username = "admin"
-$password = ""
+$username = "cisco"
+$password = "C1sco123"
 
 $timeZone = "Europe/Prague"
 $timeFormat = "24H"
@@ -151,7 +151,7 @@ Write-Host "connected to: $($res.Status.SystemUnit.ProductId), SN: $($res.Status
 #
 # STEP 1: initialize codec - set date, time & language and http proxy
 #
-foreach ($command in $initialCommands) {
+foreach ($command in $noProxyConfig) {
     Write-Host "running command: $command"
 
     $res = putXML -deviceIP $deviceIP -command $command  -username $username -password $password

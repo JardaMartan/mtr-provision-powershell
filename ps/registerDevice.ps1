@@ -1,6 +1,6 @@
 ﻿# device configuration parameters
 $deviceIP = "10.229.102.66"
-$workspaceName = "PRG7-5-DeskPro 2"
+$workspaceName = "PRG7-5-DeskPro 1"
 $location = @{
     displayName = "PRG7";
     address1 = "Pujmanove 1753/10a";
@@ -49,7 +49,7 @@ $initialCommands = @(
 # close initial OSD wizard - automated deployment
 $closeInitialWizard = $true # $false
 # install Microsoft Teams Rooms (MTR) software
-$mtrMode = $true # $false
+$mtrMode = $false # $false
 
 # new local user
 $localUser = @{

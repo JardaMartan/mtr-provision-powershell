@@ -1,21 +1,18 @@
-﻿{
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:55988",
-      "sslPort": 44394
-    }
-  },
+{
   "profiles": {
     "OAuth": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:7040;http://localhost:5039",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DATABASE_SERVER": "(local)\\SQLEXPRESS",
+        "DATABASE_NAME": "master",
+        "DATABASE_USER": "sa",
+        "DATABASE_PASSWORD": "Ucsec,123",
+        "WEBEX_CLIENT_ID": "C02cb025355183cf814f2f347930423c00348f4e53120135c1b826a89b1381237"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7040;http://localhost:5039"
     },
     "IIS Express": {
       "commandName": "IISExpress",
@@ -23,6 +20,14 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    }
+  },
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:55988",
+      "sslPort": 44394
     }
   }
 }
