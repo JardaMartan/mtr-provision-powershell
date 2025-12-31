@@ -8,7 +8,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Text.Json;
-using System.Data.SqlClient;
+//using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 
 namespace OAuth.Controllers
 {
@@ -18,8 +19,13 @@ namespace OAuth.Controllers
         static string databaseName = Environment.GetEnvironmentVariable("DATABASE_NAME");
         static string databaseUser = Environment.GetEnvironmentVariable("DATABASE_USER");
         static string databasePassword = Environment.GetEnvironmentVariable("DATABASE_PASSWORD");
+        static string useIntegratedSecurity = Environment.GetEnvironmentVariable("USE_INTEGRATED_SECURITY");
 
-        static string connectionString = $"Server={databaseServer};Database={databaseName};User={databaseUser};Password={databasePassword};";
+        // If USE_INTEGRATED_SECURITY is set to "true", use integrated security; otherwise, use SQL authentication
+        static bool useIntegratedSecurityBool = useIntegratedSecurity?.ToLower() == "true";
+        public static string connectionString;
+
+        //static string connectionString = $"Server={databaseServer};Database={databaseName};User={databaseUser};Password={databasePassword};";
 
         static string UTCformat = "yyyy-MM-ddTHH:mm:ss.fffZ";
         static string ProxyUrl = Environment.GetEnvironmentVariable("PROXY_URL");
@@ -52,6 +58,18 @@ namespace OAuth.Controllers
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
+
+            if (useIntegratedSecurityBool)
+            {
+                connectionString = $"Server={databaseServer};Database={databaseName};Integrated Security=True;";
+            }
+            else
+            {
+                connectionString = $"Server={databaseServer};Database={databaseName};User Id={databaseUser};Password={databasePassword};";
+            }
+
+            // Optional: Add encryption and trust server certificate settings for production environments
+            connectionString += "Encrypt=True;TrustServerCertificate=True;"; // Adjust as per your SQL Server setup
         }
 
         public IActionResult Index()

@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[WebexTokens] (
-    [Id]             INT          NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    [Id]             INT          NOT NULL IDENTITY(1,1),
     [clientId]       VARCHAR (MAX) NOT NULL,
     [accessToken]    VARCHAR (MAX) NOT NULL,
     [expires]        VARCHAR (50) NOT NULL,
