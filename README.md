@@ -58,8 +58,8 @@ Application configuration is set using environment variables. See [ps/setEnviron
 **DATABASE_SERVER** - SQL database server, for example **(local)/SQLEXPRESS**  
 **DATABASE_NAME** - SQL database name, for example **master**  
 **DATABASE_USER** - SQL database user, for example **sa**  
-**DATABASE_PASSWORD** - SQL database password 
-**USE_INTEGRATED_SECURITY** - set to **true** if the SQL database uses Windows Authentication, otherwise set to **false**
+**DATABASE_PASSWORD** - SQL database password  
+**USE_INTEGRATED_SECURITY** - set to **true** if the SQL database uses Windows Authentication, otherwise set to **false**  
 **WEBEX_CLIENT_ID** - client id provided in Webex Integration  
 **WEBEX_CLIENT_SECRET** - client secret provided in Webex Integration  
 **WEBEX_REDIRECT_URI** - redirect URI - URL of the IIS server for the **callback** endpoint of the application, for example **https://server.domain.com/OAuth/callback**  
